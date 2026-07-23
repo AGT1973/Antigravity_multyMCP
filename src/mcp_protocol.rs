@@ -40,17 +40,17 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
         return None;
     }
 
-    // ─── initialize ──────────────────────────────────────────────────────────
+    // ─── initialize (SOTA Stateless Update July 2026) ───────────────────────
     if method == "initialize" {
         return Some(json!({
             "jsonrpc": "2.0",
             "id": id,
             "result": {
-                "protocolVersion": "2024-11-05",
+                "protocolVersion": "2026-07-28",
                 "capabilities": { "tools": {} },
                 "serverInfo": {
                     "name": "Rust-Unified-Bridge",
-                    "version": "2.0.0-agosto2026"
+                    "version": "2.0.0-StatelessEnterprise"
                 }
             }
         }));
@@ -105,6 +105,30 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
                 "ask_sambanova",
                 "SambaNova · Llama-3.3-70B (hardware RDU, gratuito)",
                 ia_props.clone(), &["mensaje"]
+            ));
+        }
+        if c.enable_kimi {
+            let kimi_props = json!({
+                "mensaje": { "type": "string" },
+                "modelo": { "type": "string", "description": "Ej: moonshot-v1-8k, moonshot-v1-auto" },
+                "sistema": { "type": "string" }
+            });
+            tools.push(tool(
+                "ask_kimi",
+                "Moonshot AI · Kimi 2.6 (modelo libre asiático)",
+                kimi_props, &["mensaje"]
+            ));
+        }
+        if c.enable_nvidia {
+            let nv_props = json!({
+                "mensaje": { "type": "string" },
+                "modelo": { "type": "string", "description": "Ej: meta/llama-3.1-70b-instruct, deepseek-ai/deepseek-coder-33b-instruct" },
+                "sistema": { "type": "string" }
+            });
+            tools.push(tool(
+                "ask_nvidia",
+                "NVIDIA NIM · 100+ Modelos de frontera (gratuito)",
+                nv_props, &["mensaje"]
             ));
         }
 
@@ -187,6 +211,14 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
             },
             "ask_cerebras"     => provider.cerebras(msg, "llama-3.3-70b", sys).await,
             "ask_sambanova"    => provider.sambanova(msg, "Meta-Llama-3.3-70B-Instruct", sys).await,
+            "ask_kimi"         => {
+                let m = if mdl.is_empty() { "moonshot-v1-8k" } else { mdl };
+                provider.kimi(msg, m, sys).await
+            },
+            "ask_nvidia"       => {
+                let m = if mdl.is_empty() { "meta/llama-3.1-70b-instruct" } else { mdl };
+                provider.nvidia(msg, m, sys).await
+            },
             "ask_openrouter_1" => provider.openrouter(msg, sys, 1).await,
             "ask_openrouter_2" => provider.openrouter(msg, sys, 2).await,
             "ask_openrouter_3" => provider.openrouter(msg, sys, 3).await,

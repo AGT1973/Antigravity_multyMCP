@@ -14,6 +14,8 @@ pub struct Config {
     pub hf_token: Option<String>,
     pub cerebras_api_key: Option<String>,
     pub sambanova_api_key: Option<String>,
+    pub kimi_api_key: Option<String>,
+    pub nvidia_api_key: Option<String>,
 
     // OpenRouter: 3 slots de modelos configurables
     pub openrouter_model_1: Option<String>,  // default: claude-sonnet-4-5
@@ -27,6 +29,8 @@ pub struct Config {
     #[serde(default)] pub enable_hf: bool,
     #[serde(default)] pub enable_cerebras: bool,
     #[serde(default)] pub enable_sambanova: bool,
+    #[serde(default)] pub enable_kimi: bool,
+    #[serde(default)] pub enable_nvidia: bool,
     #[serde(default)] pub enable_local_ops: bool,
     // Ollama va en su propio MCP separado - NO se activa desde este bridge
     #[serde(default)] pub enable_ollama: bool,
@@ -183,6 +187,49 @@ impl MultiCloudProvider {
             }
         }
         Err(format!("SambaNova HTTP {}: {}", status, body))
+    }
+
+    pub async fn kimi(&self, prompt: &str, model: &str, system: &str) -> Result<String, String> {
+        if !self.config.enable_kimi { return Err("Kimi is disabled".into()); }
+        let key = self.config.kimi_api_key.as_deref().ok_or("Sin kimi_api_key")?;
+        let res = self.client.post("https://api.moonshot.ai/v1/chat/completions")
+            .bearer_auth(key)
+            .json(&json!({
+                "model": model,
+                "messages": Self::msgs(prompt, system)
+            }))
+            .send().await.map_err(|e| e.to_string())?;
+
+        let status = res.status();
+        let body: Value = res.json().await.map_err(|e| e.to_string())?;
+        if status.is_success() {
+            if let Some(c) = body["choices"][0]["message"]["content"].as_str() {
+                return Ok(c.to_string());
+            }
+        }
+        Err(format!("Kimi HTTP {}: {}", status, body))
+    }
+
+    pub async fn nvidia(&self, prompt: &str, model: &str, system: &str) -> Result<String, String> {
+        if !self.config.enable_nvidia { return Err("NVIDIA is disabled".into()); }
+        let key = self.config.nvidia_api_key.as_deref().ok_or("Sin nvidia_api_key")?;
+        let res = self.client.post("https://integrate.api.nvidia.com/v1/chat/completions")
+            .bearer_auth(key)
+            .json(&json!({
+                "model": model,
+                "messages": Self::msgs(prompt, system),
+                "max_tokens": 1024
+            }))
+            .send().await.map_err(|e| e.to_string())?;
+
+        let status = res.status();
+        let body: Value = res.json().await.map_err(|e| e.to_string())?;
+        if status.is_success() {
+            if let Some(c) = body["choices"][0]["message"]["content"].as_str() {
+                return Ok(c.to_string());
+            }
+        }
+        Err(format!("NVIDIA HTTP {}: {}", status, body))
     }
 
     // Llama al slot OpenRouter con el modelo indicado por número (1, 2 o 3)

@@ -24,6 +24,8 @@ Para que el puente funcione, el alumno necesita generar sus propias claves de ac
 - **HuggingFace:** [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
 - **Cerebras:** [https://cloud.cerebras.ai/](https://cloud.cerebras.ai/)
 - **SambaNova:** [https://cloud.sambanova.ai/](https://cloud.sambanova.ai/)
+- **NVIDIA NIM:** [https://build.nvidia.com/](https://build.nvidia.com/) (Más de 100 modelos de frontera gratis)
+- **Moonshot Kimi:** [https://platform.kimi.ai/](https://platform.kimi.ai/) (Kimi 2.6 y versiones libres)
 - **OpenRouter:** [https://openrouter.ai/keys](https://openrouter.ai/keys) (Para Claude, Inkling, GPT-4o, etc.)
 
 ### 2. El Puente Cloud (Rust)
