@@ -45,6 +45,11 @@ pub fn load_config() -> Config {
             let candidate = parent.join("config.json");
             if candidate.exists() {
                 config_path = candidate;
+            } else if let Some(project_root) = parent.parent().and_then(|p| p.parent()) {
+                let dev_candidate = project_root.join("config.json");
+                if dev_candidate.exists() {
+                    config_path = dev_candidate;
+                }
             }
         }
     }

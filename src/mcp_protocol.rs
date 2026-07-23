@@ -46,7 +46,7 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
             "jsonrpc": "2.0",
             "id": id,
             "result": {
-                "protocolVersion": "2026-07-28",
+                "protocolVersion": "2024-11-05",
                 "capabilities": { "tools": {} },
                 "serverInfo": {
                     "name": "Rust-Unified-Bridge",
