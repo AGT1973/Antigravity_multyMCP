@@ -51,7 +51,7 @@ async def _ask_ollama(prompt: str, model: str, sistema: str = "") -> str:
             return f"❌ Error Ollama: {e}"
 
 
-@server.tool()
+@server.tool(name="ask_ollama")
 async def ask_ollama(
     mensaje: str,
     modelo: str = DEFAULT_MODEL,
@@ -64,14 +64,14 @@ async def ask_ollama(
     return await _ask_ollama(mensaje, modelo, sistema)
 
 
-@server.tool()
+@server.tool(name="ollama_resumir")
 async def ollama_resumir(texto: str, modelo: str = DEFAULT_MODEL) -> str:
     """Ollama · Resume un texto largo usando el modelo local."""
     prompt = f"Resume el siguiente texto de forma concisa y clara:\n\n{texto}"
     return await _ask_ollama(prompt, modelo)
 
 
-@server.tool()
+@server.tool(name="ollama_investigar")
 async def ollama_investigar(tema: str, modelo: str = DEFAULT_MODEL) -> str:
     """Ollama · Razona sobre un tema y genera un análisis detallado (modo sabueso)."""
     prompt = (
@@ -82,7 +82,7 @@ async def ollama_investigar(tema: str, modelo: str = DEFAULT_MODEL) -> str:
     return await _ask_ollama(prompt, modelo, "Eres un investigador científico experto.")
 
 
-@server.tool()
+@server.tool(name="ollama_modelos")
 async def ollama_modelos() -> str:
     """Lista los modelos descargados en Ollama local."""
     async with httpx.AsyncClient(timeout=10) as client:
