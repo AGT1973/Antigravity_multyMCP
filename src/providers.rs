@@ -14,8 +14,12 @@ pub struct Config {
     pub hf_token: Option<String>,
     pub cerebras_api_key: Option<String>,
     pub sambanova_api_key: Option<String>,
-    pub ollama_api_key: Option<String>,
-    
+
+    // OpenRouter: 3 slots de modelos configurables
+    pub openrouter_model_1: Option<String>,  // default: claude-sonnet-4-5
+    pub openrouter_model_2: Option<String>,  // default: thinkingmachines/inkling
+    pub openrouter_model_3: Option<String>,  // default: openai/gpt-4o
+
     // Toggles
     #[serde(default)] pub enable_openrouter: bool,
     #[serde(default)] pub enable_groq: bool,
@@ -23,8 +27,9 @@ pub struct Config {
     #[serde(default)] pub enable_hf: bool,
     #[serde(default)] pub enable_cerebras: bool,
     #[serde(default)] pub enable_sambanova: bool,
-    #[serde(default)] pub enable_ollama: bool,
     #[serde(default)] pub enable_local_ops: bool,
+    // Ollama va en su propio MCP separado - NO se activa desde este bridge
+    #[serde(default)] pub enable_ollama: bool,
 }
 
 pub fn load_config() -> Config {
@@ -180,13 +185,25 @@ impl MultiCloudProvider {
         Err(format!("SambaNova HTTP {}: {}", status, body))
     }
 
-    pub async fn openrouter(&self, prompt: &str, system: &str) -> Result<String, String> {
+    // Llama al slot OpenRouter con el modelo indicado por número (1, 2 o 3)
+    pub async fn openrouter(&self, prompt: &str, system: &str, slot: u8) -> Result<String, String> {
         if !self.config.enable_openrouter { return Err("OpenRouter is disabled".into()); }
         let key = self.config.openrouter_api_key.as_deref().ok_or("Sin openrouter_api_key")?;
+
+        let model = match slot {
+            2 => self.config.openrouter_model_2.as_deref()
+                    .unwrap_or("thinkingmachines/inkling"),
+            3 => self.config.openrouter_model_3.as_deref()
+                    .unwrap_or("openai/gpt-4o"),
+            _ => self.config.openrouter_model_1.as_deref()
+                    .unwrap_or("anthropic/claude-sonnet-4-5"),
+        };
+
         let res = self.client.post("https://openrouter.ai/api/v1/chat/completions")
             .bearer_auth(key)
+            .header("HTTP-Referer", "https://github.com/AGT1973/Antigravity_multyMCP")
             .json(&json!({
-                "model": "anthropic/claude-3.5-sonnet",
+                "model": model,
                 "messages": Self::msgs(prompt, system)
             }))
             .send().await.map_err(|e| e.to_string())?;
@@ -198,14 +215,14 @@ impl MultiCloudProvider {
                 return Ok(c.to_string());
             }
         }
-        Err(format!("OpenRouter HTTP {}: {}", status, body))
+        Err(format!("OpenRouter({}) HTTP {}: {}", model, status, body))
     }
 
-    pub async fn ollama(&self, prompt: &str, system: &str) -> Result<String, String> {
-        if !self.config.enable_ollama { return Err("Ollama is disabled".into()); }
+    pub async fn ollama(&self, prompt: &str, model: &str, system: &str) -> Result<String, String> {
+        if !self.config.enable_ollama { return Err("Ollama is disabled in this bridge. Use mcp-ollama-nocturno server.".into()); }
         let res = self.client.post("http://localhost:11434/api/chat")
             .json(&json!({
-                "model": "deepseek-r1:14b",
+                "model": model,
                 "messages": Self::msgs(prompt, system),
                 "stream": false
             }))
