@@ -1,11 +1,11 @@
-# Antigravity_multyMCP (v2.0 Agosto 2026)
+# Proyecto: Configuración MCP & Orquestación Sincronizada (v2.0 Agosto 2026)
 
-Un puente **Model Context Protocol (MCP)** ultrarrápido y unificado, desarrollado en Rust para [Antigravity](https://github.com/AGT1973/Antigravity), junto con servidores especializados en Python.
+Este repositorio documenta y mantiene la estructura multi-agente (`configuracion_mpc`) diseñada **para ser compartida y utilizada por los alumnos** en sus proyectos. 
 
-Este repositorio contiene:
-1. **Rust Unified Bridge (`mcp_rust_bridge`)**: Absorbe y unifica las operaciones de múltiples IAs Cloud en paralelo, reduciendo drásticamente la latencia y memoria consumida frente a wrappers en Python.
-2. **MCP Ollama Nocturno (`mcp_ollama_nocturno.py`)**: Un servidor independiente en Python exclusivo para modelos locales (modo nocturno / sabueso).
-3. **Scripts de Test**: Herramientas integradas para validar endpoints antes de compilar y probar latencias.
+### Propósito y Alcance del Proyecto
+1. **El Hub de 8 Agentes:** Este entorno se enfoca exclusivamente en manejar las 8 IAs principales (incluyendo la reciente integración de *Thinkingmachines/Inkling*) configuradas como **Agentes nativos de AGY**. Esto permite que el orquestador principal (Antigravity) coordine y consulte a los modelos simultáneamente vía Hub a través de un puente ultrarrápido en Rust (`mcp_rust_bridge`).
+2. **Restricción Estricta de Co-Work (Ollama):** Se provee un MCP secundario (`mcp_ollama_nocturno.py`) exclusivo para trabajo nocturno o en background. **Regla de oro:** Este modelo jamás debe iniciar `ollama serve` si el usuario está utilizando la PC, ya que la latencia y consumo de disco impedirían el trabajo fluido humano-máquina.
+3. **Monitorización Continua:** El ecosistema cuenta con un vigilante automático que monitoriza la estructura multi-agente y garantiza que tanto el código en Git (GitHub) como las copias de seguridad en Google Drive se mantengan permanentemente sincronizadas y actualizadas.
 
 ## Características Principales (Agosto 2026)
 
