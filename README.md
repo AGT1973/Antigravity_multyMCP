@@ -17,9 +17,18 @@ Este repositorio documenta y mantiene la estructura multi-agente (`configuracion
 
 ## Instalación ("Plug & Play")
 
-### 1. El Puente Cloud (Rust)
+### 1. Obtención de API Keys (Enlaces Directos)
+Para que el puente funcione, el alumno necesita generar sus propias claves de acceso (la mayoría son gratuitas para desarrolladores):
+- **Groq:** [https://console.groq.com/keys](https://console.groq.com/keys)
+- **Google Gemini:** [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+- **HuggingFace:** [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+- **Cerebras:** [https://cloud.cerebras.ai/](https://cloud.cerebras.ai/)
+- **SambaNova:** [https://cloud.sambanova.ai/](https://cloud.sambanova.ai/)
+- **OpenRouter:** [https://openrouter.ai/keys](https://openrouter.ai/keys) (Para Claude, Inkling, GPT-4o, etc.)
+
+### 2. El Puente Cloud (Rust)
 1. Descarga el ejecutable desde la sección Releases o compílalo tú mismo (`cargo build --release`).
-2. Edita `config.json` para añadir tus *API Keys* y configurar los 3 slots de OpenRouter.
+2. Edita `config.json` para inyectar tus *API Keys* y configurar los 3 slots de OpenRouter.
 3. En Antigravity, añade al `mcp_config.json`:
 ```json
 "mcp-7-bridges-rust": {
