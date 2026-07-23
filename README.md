@@ -39,21 +39,26 @@ Si vas a dejar tareas pesadas de investigación corriendo a la noche sin consumi
 }
 ```
 
-## Compilación desde código fuente y Pruebas
+## Compilación Multiplataforma (Windows, Mac, Linux)
 
-Antes de subir cambios de código, puedes validar que todos los puentes respondan haciendo:
-
-```bash
-python test_bridges.py
-```
-
-Para compilar el puente en Rust:
+Para compilar el puente de Rust desde el código fuente en cualquier sistema operativo, asegúrate de tener [Rust instalado](https://rustup.rs/).
 
 ```bash
 cd mcp_rust_bridge
 cargo build --release
 ```
-El binario optimizado quedará en `target/release/mcp_rust_bridge.exe`.
+
+**Ubicación del ejecutable:**
+- **Windows:** `target/release/mcp_rust_bridge.exe`
+- **Mac / Linux:** `target/release/mcp_rust_bridge`
+
+*Nota para Mac/Linux:* Asegúrate de actualizar el archivo `mcp_config.json` de Antigravity para que apunte al binario sin la extensión `.exe`.
+
+## Configuración del Prompt para cada Alumno
+
+Cada alumno tiene la libertad de darle una personalidad única y un rol específico a su IA dentro de Antigravity. Dado que este puente MCP delega las consultas a los modelos puros (sin forzarles un comportamiento), el alumno debe inyectar el **"System Prompt"**.
+
+Para hacerlo, el alumno debe crear o editar el archivo de su subagente en su carpeta local `.agents/` (ej: `.agents/MI_AGENTE.md`) e incluir la instrucción base. Antigravity leerá esa configuración y la pasará automáticamente a los conectores (Claude, Inkling, GPT-4o, etc.) como el parámetro `sistema` en cada ejecución.
 
 ---
 *Diseñado para la tesis de Espacios Nativos de Alta Dimensión (LatentMAS) - Versión Agosto 2026.*
