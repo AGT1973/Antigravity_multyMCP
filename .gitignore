@@ -1,0 +1,19 @@
+# Rust build artifacts
+/target
+Cargo.lock
+
+# API Keys (NEVER commit these)
+.env
+config.json
+/target/release/config.json
+
+# Scratch / generator scripts
+scaffold.py
+gen_bridges.py
+
+# IDE
+.vscode/
+.idea/
+
+mcp_config.json
+

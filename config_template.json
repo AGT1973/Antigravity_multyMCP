@@ -1,0 +1,18 @@
+{
+  "openrouter_api_key": "sk-or-v1-...",
+  "groq_api_key": "gsk_...",
+  "gemini_api_key": "AIzaSy...",
+  "hf_token": "hf_...",
+  "cerebras_api_key": "...",
+  "sambanova_api_key": "...",
+  "ollama_api_key": "",
+
+  "enable_local_ops": true,
+  "enable_openrouter": false,
+  "enable_groq": true,
+  "enable_gemini": true,
+  "enable_hf": false,
+  "enable_cerebras": false,
+  "enable_sambanova": false,
+  "enable_ollama": false
+}

@@ -1,0 +1,9 @@
+[package]
+name = "mcp_groq"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+mcp_core = { path = "../mcp_core" }
+tokio = { version = "1.0", features = ["full"] }
+serde_json = "1.0"

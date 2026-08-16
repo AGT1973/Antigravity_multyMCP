@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "NvidiaNIM": {
+      "command": "D:/_______ia_local/Antigravity/Antigravity_multyMCP/target/release/mcp_nvidia.exe",
+      "args": []
+    },
+    "Groq": {
+      "command": "D:/_______ia_local/Antigravity/Antigravity_multyMCP/target/release/mcp_groq.exe",
+      "args": []
+    },
+    "OpenRouter": {
+      "command": "D:/_______ia_local/Antigravity/Antigravity_multyMCP/target/release/mcp_openrouter.exe",
+      "args": []
+    },
+    "MoonshotKimi": {
+      "command": "D:/_______ia_local/Antigravity/Antigravity_multyMCP/target/release/mcp_kimi.exe",
+      "args": []
+    },
+    "Cerebras": {
+      "command": "D:/_______ia_local/Antigravity/Antigravity_multyMCP/target/release/mcp_cerebras.exe",
+      "args": []
+    },
+    "SambaNova": {
+      "command": "D:/_______ia_local/Antigravity/Antigravity_multyMCP/target/release/mcp_sambanova.exe",
+      "args": []
+    },
+    "HuggingFace": {
+      "command": "D:/_______ia_local/Antigravity/Antigravity_multyMCP/target/release/mcp_hf.exe",
+      "args": []
+    },
+    "Gemini": {
+      "command": "D:/_______ia_local/Antigravity/Antigravity_multyMCP/target/release/mcp_gemini.exe",
+      "args": []
+    }
+  }
+}

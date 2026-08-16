@@ -1,0 +1,13 @@
+[workspace]
+members = [
+    "mcp_core",
+    "mcp_orchestrator",
+    "mcp_nvidia",
+    "mcp_groq",
+    "mcp_openrouter",
+    "mcp_kimi",
+    "mcp_sambanova",
+    "mcp_hf",
+    "mcp_cerebras",
+    "mcp_gemini",
+]
