@@ -1,0 +1,23 @@
+{
+  "student": "TEMPLATE",
+  "hubs": {
+    "cerebras": {
+      "model": "llama-3.3-70b",
+      "base_url": "https://api.cerebras.ai/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [
+        {
+          "api_key": "PEGAR_TU_API_KEY_AQUI",
+          "cooldown_hours": 5.0,
+          "exhausted_at": null,
+          "last_used": 0,
+          "peticiones_total": 0,
+          "veces_agotada": 0,
+          "notes": ""
+        }
+      ]
+    }
+    // Añade más hubs siguiendo la misma estructura
+  }
+}
