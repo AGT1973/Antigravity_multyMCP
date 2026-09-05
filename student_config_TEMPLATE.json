@@ -6,18 +6,225 @@
       "base_url": "https://api.cerebras.ai/v1",
       "compatible_with": "openai",
       "cooldown_hours": 5.0,
-      "keys": [
-        {
-          "api_key": "PEGAR_TU_API_KEY_AQUI",
-          "cooldown_hours": 5.0,
-          "exhausted_at": null,
-          "last_used": 0,
-          "peticiones_total": 0,
-          "veces_agotada": 0,
-          "notes": ""
-        }
-      ]
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "huggingface": {
+      "model": "meta-llama/Llama-3.3-70B-Instruct",
+      "base_url": "https://router.huggingface.co/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "aistudio": {
+      "model": "gemini-2.0-flash",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "sambanova": {
+      "model": "Meta-Llama-3.3-70B-Instruct",
+      "base_url": "https://api.sambanova.ai/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "claude": {
+      "model": "claude-3-5-sonnet-20241022",
+      "base_url": "https://api.anthropic.com/v1",
+      "compatible_with": "anthropic",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "mulerouter": {
+      "model": "google/gemini-2.0-flash-001",
+      "base_url": "https://openrouter.ai/api/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "deepseek": {
+      "model": "deepseek-chat",
+      "base_url": "https://api.deepseek.com/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "groq": {
+      "model": "llama-3.3-70b-versatile",
+      "base_url": "https://api.groq.com/openai/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "kimi": {
+      "model": "moonshot-v1-128k",
+      "base_url": "https://api.moonshot.cn/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "nvidia": {
+      "model": "nvidia/llama-3.1-nemotron-70b-instruct",
+      "base_url": "https://integrate.api.nvidia.com/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "thinkingmachines": {
+      "model": "thinking-v1",
+      "base_url": "https://api.thinkingmachines.ai/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "paperspace": {
+      "model": "llama-3.1-8b-instruct",
+      "base_url": "https://api.paperspace.io/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "kaggle": {
+      "model": "N/A",
+      "base_url": "https://www.kaggle.com/api/v1",
+      "compatible_with": "kaggle_sdk",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "ollama": {
+      "model": "llama3.2",
+      "base_url": "http://localhost:11434/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
+    },
+    "openrouter": {
+      "model": "google/gemini-2.0-flash-001",
+      "base_url": "https://openrouter.ai/api/v1",
+      "compatible_with": "openai",
+      "cooldown_hours": 5.0,
+      "keys": [{
+        "api_key": "pon aqui tu apikey-put here your apikey",
+        "cooldown_hours": 5.0,
+        "exhausted_at": null,
+        "last_used": 0,
+        "peticiones_total": 0,
+        "veces_agotada": 0,
+        "notes": ""
+      }]
     }
-    // Añade más hubs siguiendo la misma estructura
   }
 }
