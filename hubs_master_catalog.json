@@ -1,0 +1,173 @@
+{
+  "_meta": {
+    "version": "2026-08-26",
+    "description": "Catalogo maestro de Hubs de IA y sus modelos activos. Mantenido por el profesor. Cuando un proveedor depreca un modelo, SOLO se actualiza este archivo.",
+    "importante": "Si un alumno recibe error 404 al llamar a un hub, el campo model en su student_config.json esta desactualizado. Reemplazarlo con el valor de este catalogo.",
+    "como_agregar_hub_nuevo": "Agregar una nueva entrada al objeto hubs con los campos: model, base_url, compatible_with, api_key_url, notes, last_verified."
+  },
+  "hubs": {
+    "groq": {
+      "model": "llama-3.3-70b-versatile",
+      "base_url": "https://api.groq.com/openai/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://console.groq.com/keys",
+      "notes": "Free tier con rate limits. Compatible 100% con la spec de OpenAI.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "llama3-70b-8192",
+        "mixtral-8x7b-32768",
+        "gemma2-9b-it"
+      ]
+    },
+    "aistudio": {
+      "model": "gemini-2.0-flash",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "compatible_with": "openai",
+      "api_key_url": "https://aistudio.google.com/apikey",
+      "notes": "Google AI Studio. Usar el endpoint compatible con OpenAI.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "gemini-1.5-flash",
+        "gemini-2.5-flash-preview-05-20"
+      ]
+    },
+    "cerebras": {
+      "model": "llama-3.3-70b",
+      "base_url": "https://api.cerebras.ai/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://cloud.cerebras.ai",
+      "notes": "Inferencia ultrarrápida. Free tier generoso.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "llama3.1-8b",
+        "llama3.1-70b"
+      ]
+    },
+    "sambanova": {
+      "model": "Meta-Llama-3.3-70B-Instruct",
+      "base_url": "https://api.sambanova.ai/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://cloud.sambanova.ai/apis",
+      "notes": "SambaNova Cloud. Modelos grandes con buena velocidad.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "Meta-Llama-3.1-405B-Instruct",
+        "Qwen2.5-Coder-32B-Instruct"
+      ]
+    },
+    "claude": {
+      "model": "claude-sonnet-4-5",
+      "base_url": "https://api.anthropic.com/v1",
+      "compatible_with": "anthropic",
+      "api_key_url": "https://console.anthropic.com/settings/keys",
+      "notes": "API nativa de Anthropic. NO compatible con OpenAI spec.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "claude-3-5-haiku-20241022",
+        "claude-opus-4-5"
+      ]
+    },
+    "openrouter": {
+      "model": "google/gemini-flash-1.5",
+      "base_url": "https://openrouter.ai/api/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://openrouter.ai/keys",
+      "notes": "Gateway multi-modelo. El campo model usa formato proveedor/nombre-modelo.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "openai/gpt-4o-mini",
+        "anthropic/claude-3.5-haiku",
+        "meta-llama/llama-3.3-70b-instruct"
+      ]
+    },
+    "deepseek": {
+      "model": "deepseek-chat",
+      "base_url": "https://api.deepseek.com/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://platform.deepseek.com/api_keys",
+      "notes": "deepseek-chat=V3 (general), deepseek-reasoner=R1 (razonamiento).",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "deepseek-reasoner"
+      ]
+    },
+    "kimi": {
+      "model": "moonshot-v1-128k",
+      "base_url": "https://api.moonshot.cn/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://platform.moonshot.cn/console/api-keys",
+      "notes": "Moonshot AI. Ventana de 128k tokens.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "moonshot-v1-8k",
+        "moonshot-v1-32k",
+        "kimi-k2-0711-preview"
+      ]
+    },
+    "nvidia": {
+      "model": "nvidia/llama-3.1-nemotron-70b-instruct",
+      "base_url": "https://integrate.api.nvidia.com/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://build.nvidia.com/",
+      "notes": "NVIDIA NIM. Credito \\ gratuito. Formato modelo: organizacion/nombre.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "meta/llama-3.1-405b-instruct",
+        "mistralai/mixtral-8x22b-instruct-v0.1"
+      ]
+    },
+    "huggingface": {
+      "model": "meta-llama/Llama-3.3-70B-Instruct",
+      "base_url": "https://router.huggingface.co/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://huggingface.co/settings/tokens",
+      "notes": "HF Inference API Serverless. Puede haber timeouts en picos de trafico. Token necesita permisos Inference API.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "Qwen/Qwen2.5-72B-Instruct",
+        "microsoft/Phi-3.5-mini-instruct"
+      ]
+    },
+    "ollama": {
+      "model": "llama3.2",
+      "base_url": "http://localhost:11434/v1",
+      "compatible_with": "openai",
+      "api_key_url": "N/A - Local, no requiere API key",
+      "notes": "Servidor local. Alumno debe tener Ollama instalado y modelo descargado. api_key puede ser cualquier string no vacio.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": [
+        "phi4",
+        "mistral",
+        "gemma3:12b",
+        "qwen2.5:72b"
+      ]
+    },
+    "kaggle": {
+      "model": "N/A",
+      "base_url": "https://www.kaggle.com/api/v1",
+      "compatible_with": "kaggle_sdk",
+      "api_key_url": "https://www.kaggle.com/settings/account",
+      "notes": "Kaggle es plataforma de computo, NO un LLM API directo. Para inferencia, se corre un servidor en notebook y se expone con ngrok. api_key aqui es el token de la API de Kaggle.",
+      "last_verified": "2026-08-26",
+      "modelos_alternativos": []
+    },
+    "paperspace": {
+      "model": "llama-3.1-8b-instruct",
+      "base_url": "https://api.paperspace.io/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://console.paperspace.com/account/api-keys",
+      "notes": "El endpoint de inferencia depende del deployment activo del alumno. Verificar URL en el dashboard de Paperspace.",
+      "last_verified": "PENDIENTE_VERIFICACION",
+      "modelos_alternativos": []
+    },
+    "thinkingmachines": {
+      "model": "PENDIENTE",
+      "base_url": "PENDIENTE",
+      "compatible_with": "PENDIENTE",
+      "api_key_url": "https://thinkingmachines.ai",
+      "notes": "ADVERTENCIA: Datos no confirmados. Verificar con el proveedor antes de distribuir a alumnos.",
+      "last_verified": "PENDIENTE_VERIFICACION",
+      "modelos_alternativos": []
+    }
+  }
+}
