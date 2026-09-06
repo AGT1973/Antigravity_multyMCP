@@ -8,7 +8,7 @@ impl ProviderConfig for SambanovaProvider {
     }
 
     fn description(&self) -> &str {
-        "Delegate to SambaNova for fast reasoning."
+        "Delegate to SambaNova for high-throughput SN40L RDU inference."
     }
 
     fn env_prefix(&self) -> &str {
@@ -20,7 +20,7 @@ impl ProviderConfig for SambanovaProvider {
     }
 
     fn default_model(&self) -> &str {
-        "Meta-Llama-3.1-70B-Instruct"
+        "Meta-Llama-3.3-70B-Instruct"
     }
 }
 

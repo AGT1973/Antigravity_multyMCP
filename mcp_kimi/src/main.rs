@@ -16,11 +16,11 @@ impl ProviderConfig for KimiProvider {
     }
 
     fn api_url(&self) -> &str {
-        "https://api.moonshot.cn/v1/chat/completions"
+        "https://api.moonshot.ai/v1/chat/completions"
     }
 
     fn default_model(&self) -> &str {
-        "moonshot-v1-128k"
+        "kimi-k3"
     }
 }
 

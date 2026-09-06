@@ -20,7 +20,7 @@ impl ProviderConfig for CerebrasProvider {
     }
 
     fn default_model(&self) -> &str {
-        "llama3.1-8b"
+        "gemma-4-31b"
     }
 }
 

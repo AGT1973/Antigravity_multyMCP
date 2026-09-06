@@ -12,7 +12,7 @@ impl ProviderConfig for OpenrouterProvider {
     }
 
     fn env_prefix(&self) -> &str {
-        "OR_API_KEY"
+        "OPENROUTER_API_KEY"
     }
 
     fn api_url(&self) -> &str {
@@ -20,7 +20,7 @@ impl ProviderConfig for OpenrouterProvider {
     }
 
     fn default_model(&self) -> &str {
-        "anthropic/claude-3-opus-20240229"
+        "deepseek/deepseek-chat"
     }
 }
 

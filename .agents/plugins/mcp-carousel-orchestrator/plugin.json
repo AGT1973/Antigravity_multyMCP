@@ -1,0 +1,17 @@
+{
+  "name": "mcp-carousel-orchestrator",
+  "version": "1.0.0",
+  "description": "Build with Google: Plugin oficial para la gestión, rotación y orquestación en carrusel temporal de API Keys y Hubs MCP (Hub, API Key, Fecha de Consumo, Tiempo de Recarga).",
+  "author": {
+    "name": "Ariel García Traba & Antigravity (Google DeepMind Team)"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "antigravity",
+    "mcp-carousel",
+    "circuit-breaker",
+    "token-matrix",
+    "hub-router",
+    "cooldown-manager"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "build-with-google-polydim-compute",
+  "version": "1.0.0",
+  "description": "Build with Google: Suite oficial de cómputo asintótico en CPU, GPU (CUDA) y TPU (JAX) para Google Colab, Kaggle y Hub Multi-Cloud de POLYDIM.",
+  "author": {
+    "name": "Ariel García Traba & Antigravity (Google DeepMind Team)"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "antigravity",
+    "google-colab",
+    "kaggle",
+    "tpu",
+    "gpu",
+    "polydim",
+    "circuit-breaker",
+    "mcp"
+  ]
+}

@@ -20,7 +20,7 @@ impl ProviderConfig for GroqProvider {
     }
 
     fn default_model(&self) -> &str {
-        "gpt-oss-120b"
+        "openai/gpt-oss-120b"
     }
 }
 

@@ -25,8 +25,8 @@ server = FastMCP("Antigravity-Ollama-Nocturno")
 OLLAMA_URL = "http://localhost:11434"
 TIMEOUT    = 300.0  # Los modelos locales son lentos
 
-# Modelo por defecto para investigación y razonamiento
-DEFAULT_MODEL = "deepseek-r1:14b"
+# Modelo por defecto para investigación y código local (Qwen / GLM)
+DEFAULT_MODEL = "qwen3.8:latest"
 
 
 async def _ask_ollama(prompt: str, model: str, sistema: str = "") -> str:

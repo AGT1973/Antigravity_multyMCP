@@ -20,7 +20,7 @@ impl ProviderConfig for HfProvider {
     }
 
     fn default_model(&self) -> &str {
-        "meta-llama/Meta-Llama-3-70B-Instruct"
+        "Qwen/Qwen2.5-Coder-32B-Instruct"
     }
 }
 

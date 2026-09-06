@@ -10,4 +10,8 @@ members = [
     "mcp_hf",
     "mcp_cerebras",
     "mcp_gemini",
+    "mcp_deepseek",
+    "mcp_glm",
+    "mcp_qwen",
 ]
+
