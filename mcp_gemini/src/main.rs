@@ -20,7 +20,7 @@ impl ProviderConfig for GeminiProvider {
     }
 
     fn default_model(&self) -> &str {
-        "gemini-3.7-flash"
+        "gemini-3.6-flash"
     }
 }
 

@@ -58,6 +58,17 @@ pub async fn run_server<P: ProviderConfig>(provider: P) {
                         .unwrap_or("Hello")
                         .to_string();
 
+                    // REGLA: No más hardcodeos. Buscar versión dinámica desde ENV/JSON.
+                    let mut actual_model = provider.default_model().to_string();
+                    let prefix = provider.env_prefix().split('_').next().unwrap_or("API");
+                    let specific_env = format!("{}_MODEL", prefix);
+                    
+                    if let Ok(env_val) = std::env::var(&specific_env).or_else(|_| std::env::var("MODEL")) {
+                        if !env_val.is_empty() {
+                            actual_model = env_val;
+                        }
+                    }
+
                     // Intentamos con la matriz de llaves (Retry/Circuit breaker loop)
                     for _ in 0..3 {
                         if !keys.is_available() {
@@ -67,7 +78,7 @@ pub async fn run_server<P: ProviderConfig>(provider: P) {
                         if let Some(key) = keys.get_current_key() {
                             match execute_openai_compatible(
                                 provider.api_url(),
-                                provider.default_model(),
+                                &actual_model,
                                 &key,
                                 &prompt
                             ).await {

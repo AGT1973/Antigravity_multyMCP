@@ -204,7 +204,7 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
 
         let res: Result<String, String> = match name {
             "ask_groq"         => provider.groq(msg, "gpt-oss-120b", sys).await,
-            "ask_gemini"       => provider.gemini(msg, "gemini-3.7-flash", sys).await,
+            "ask_gemini"       => provider.gemini(msg, "gemini-3.6-flash", sys).await,
             "ask_hf"           => {
                 let m = if mdl.is_empty() { "meta-llama/Llama-3.3-70B-Instruct" } else { mdl };
                 provider.hf(msg, m, sys).await
