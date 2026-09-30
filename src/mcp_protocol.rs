@@ -31,6 +31,19 @@ fn err_response(id: Value, err: String) -> Value {
     })
 }
 
+fn resolve_model(passed: &str, config_val: Option<&String>, provider_name: &str) -> Result<String, String> {
+    if !passed.trim().is_empty() {
+        Ok(passed.trim().to_string())
+    } else if let Some(m) = config_val {
+        if !m.trim().is_empty() {
+            return Ok(m.trim().to_string());
+        }
+        Err(format!("El modelo para '{}' en config.json está vacío. Especifique 'modelo' en la llamada o en config.json.", provider_name))
+    } else {
+        Err(format!("Sin modelo configurado para '{}' en config.json ni en el parámetro 'modelo'. Por favor defina el modelo en config.json o páselo en la consulta.", provider_name))
+    }
+}
+
 pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Option<Value> {
     let id = req.get("id").cloned().unwrap_or(json!(null));
     let method = req.get("method").and_then(|m| m.as_str()).unwrap_or("");
@@ -40,7 +53,7 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
         return None;
     }
 
-    // ─── initialize (SOTA Stateless Update July 2026) ───────────────────────
+    // ─── initialize ──────────────────────────────────────────────────────────
     if method == "initialize" {
         return Some(json!({
             "jsonrpc": "2.0",
@@ -50,7 +63,7 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
                 "capabilities": { "tools": {} },
                 "serverInfo": {
                     "name": "Rust-Unified-Bridge",
-                    "version": "2.0.0-StatelessEnterprise"
+                    "version": "2.1.0-ZeroHardcode"
                 }
             }
         }));
@@ -63,109 +76,91 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
 
         let ia_props = json!({
             "mensaje": { "type": "string", "description": "Tu pregunta o prompt" },
+            "modelo": { "type": "string", "description": "Nombre del modelo (opcional, invalida la configuración de config.json)" },
             "sistema": { "type": "string", "description": "Instrucción de sistema (opcional)" }
         });
 
-        // ── Hubs Gratuitos / Cloud ──────────────────────────────────────────
+        // ── Hubs Cloud ───────────────────────────────────────────────────────
         if c.enable_groq {
             tools.push(tool(
                 "ask_groq",
-                "Groq · Llama-3.3-70b-versatile (ultra-rápido, gratuito)",
+                "Groq · Inferencia LPU ultra-rápida (Modelo configurable via config.json o parámetro 'modelo')",
                 ia_props.clone(), &["mensaje"]
             ));
         }
         if c.enable_gemini {
             tools.push(tool(
                 "ask_gemini",
-                "Google · Gemini 2.0 Flash (gratuito)",
+                "Google Gemini · API AI Studio (Modelo configurable via config.json o parámetro 'modelo')",
                 ia_props.clone(), &["mensaje"]
             ));
         }
         if c.enable_hf {
-            let hf_props = json!({
-                "mensaje": { "type": "string" },
-                "modelo": { "type": "string", "description": "Ej: meta-llama/Llama-3.3-70B-Instruct" },
-                "sistema": { "type": "string" }
-            });
             tools.push(tool(
                 "ask_hf",
-                "HuggingFace · Inference API (modelos open-weight)",
-                hf_props, &["mensaje"]
+                "HuggingFace · Inference API (Modelo configurable via config.json o parámetro 'modelo')",
+                ia_props.clone(), &["mensaje"]
             ));
         }
         if c.enable_cerebras {
             tools.push(tool(
                 "ask_cerebras",
-                "Cerebras · Llama-3.3-70b (inferencia en wafer, gratuito)",
+                "Cerebras WSE · Inferencia a ultra-alta velocidad (Modelo configurable via config.json o parámetro 'modelo')",
                 ia_props.clone(), &["mensaje"]
             ));
         }
         if c.enable_sambanova {
             tools.push(tool(
                 "ask_sambanova",
-                "SambaNova · Llama-3.3-70B (hardware RDU, gratuito)",
+                "SambaNova · Hardware RDU (Modelo configurable via config.json o parámetro 'modelo')",
                 ia_props.clone(), &["mensaje"]
             ));
         }
         if c.enable_kimi {
-            let kimi_props = json!({
-                "mensaje": { "type": "string" },
-                "modelo": { "type": "string", "description": "Ej: moonshot-v1-8k, moonshot-v1-auto" },
-                "sistema": { "type": "string" }
-            });
             tools.push(tool(
                 "ask_kimi",
-                "Moonshot AI · Kimi 2.6 (modelo libre asiático)",
-                kimi_props, &["mensaje"]
+                "Moonshot AI / Kimi · Razonamiento y contexto masivo (Modelo configurable via config.json o parámetro 'modelo')",
+                ia_props.clone(), &["mensaje"]
             ));
         }
         if c.enable_nvidia {
-            let nv_props = json!({
-                "mensaje": { "type": "string" },
-                "modelo": { "type": "string", "description": "Ej: meta/llama-3.1-70b-instruct, deepseek-ai/deepseek-coder-33b-instruct" },
-                "sistema": { "type": "string" }
-            });
             tools.push(tool(
                 "ask_nvidia",
-                "NVIDIA NIM · 100+ Modelos de frontera (gratuito)",
-                nv_props, &["mensaje"]
+                "NVIDIA NIM · Modelos de frontera (Modelo configurable via config.json o parámetro 'modelo')",
+                ia_props.clone(), &["mensaje"]
             ));
         }
 
-        // ── OpenRouter Pago (3 slots configurables) ─────────────────────────
+        // ── OpenRouter ───────────────────────────────────────────────────────
         if c.enable_openrouter {
-            let m1 = c.openrouter_model_1.as_deref().unwrap_or("anthropic/claude-sonnet-4-5");
-            let m2 = c.openrouter_model_2.as_deref().unwrap_or("thinkingmachines/inkling");
-            let m3 = c.openrouter_model_3.as_deref().unwrap_or("openai/gpt-4o");
-
             tools.push(tool(
                 "ask_openrouter_1",
-                &format!("OpenRouter · Slot 1 → {} (pago)", m1),
+                &format!("OpenRouter Slot 1 · Modelo: {} (opcional override con 'modelo')", c.openrouter_model_1.as_deref().unwrap_or("no-configurado")),
                 ia_props.clone(), &["mensaje"]
             ));
             tools.push(tool(
                 "ask_openrouter_2",
-                &format!("OpenRouter · Slot 2 → {} (pago)", m2),
+                &format!("OpenRouter Slot 2 · Modelo: {} (opcional override con 'modelo')", c.openrouter_model_2.as_deref().unwrap_or("no-configurado")),
                 ia_props.clone(), &["mensaje"]
             ));
             tools.push(tool(
                 "ask_openrouter_3",
-                &format!("OpenRouter · Slot 3 → {} (pago)", m3),
+                &format!("OpenRouter Slot 3 · Modelo: {} (opcional override con 'modelo')", c.openrouter_model_3.as_deref().unwrap_or("no-configurado")),
+                ia_props.clone(), &["mensaje"]
+            ));
+            tools.push(tool(
+                "ask_openrouter",
+                "OpenRouter Multi-Model Gateway (Requiere especificar 'modelo' o usa el de config.json)",
                 ia_props.clone(), &["mensaje"]
             ));
         }
 
-        // ── Ollama Local (solo si está habilitado) ──────────────────────────
+        // ── Ollama Local ─────────────────────────────────────────────────────
         if c.enable_ollama {
-            let ollama_props = json!({
-                "mensaje": { "type": "string" },
-                "modelo": { "type": "string", "description": "Ej: deepseek-r1:14b, llama3.1:8b" },
-                "sistema": { "type": "string" }
-            });
             tools.push(tool(
                 "ask_ollama",
-                "Ollama · Modelos locales (modo nocturno)",
-                ollama_props, &["mensaje"]
+                "Ollama Local · Modelos en máquina (Modelo configurable via config.json o parámetro 'modelo')",
+                ia_props.clone(), &["mensaje"]
             ));
         }
 
@@ -202,29 +197,56 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
         let sys   = args.get("sistema").and_then(|s| s.as_str()).unwrap_or("");
         let mdl   = args.get("modelo").and_then(|m| m.as_str()).unwrap_or("");
 
+        let c = &provider.config;
+
         let res: Result<String, String> = match name {
-            "ask_groq"         => provider.groq(msg, "llama-3.3-70b-versatile", sys).await,
-            "ask_gemini"       => provider.gemini(msg, "gemini-2.0-flash", sys).await,
-            "ask_hf"           => {
-                let m = if mdl.is_empty() { "meta-llama/Llama-3.3-70B-Instruct" } else { mdl };
-                provider.hf(msg, m, sys).await
+            "ask_groq" => match resolve_model(mdl, c.groq_model.as_ref(), "groq") {
+                Ok(m) => provider.groq(msg, &m, sys).await,
+                Err(e) => Err(e),
             },
-            "ask_cerebras"     => provider.cerebras(msg, "llama-3.3-70b", sys).await,
-            "ask_sambanova"    => provider.sambanova(msg, "Meta-Llama-3.3-70B-Instruct", sys).await,
-            "ask_kimi"         => {
-                let m = if mdl.is_empty() { "moonshot-v1-8k" } else { mdl };
-                provider.kimi(msg, m, sys).await
+            "ask_gemini" => match resolve_model(mdl, c.gemini_model.as_ref(), "gemini") {
+                Ok(m) => provider.gemini(msg, &m, sys).await,
+                Err(e) => Err(e),
             },
-            "ask_nvidia"       => {
-                let m = if mdl.is_empty() { "meta/llama-3.1-70b-instruct" } else { mdl };
-                provider.nvidia(msg, m, sys).await
+            "ask_hf" => match resolve_model(mdl, c.hf_model.as_ref(), "hf") {
+                Ok(m) => provider.hf(msg, &m, sys).await,
+                Err(e) => Err(e),
             },
-            "ask_openrouter_1" => provider.openrouter(msg, sys, 1).await,
-            "ask_openrouter_2" => provider.openrouter(msg, sys, 2).await,
-            "ask_openrouter_3" => provider.openrouter(msg, sys, 3).await,
-            "ask_ollama"       => {
-                let m = if mdl.is_empty() { "deepseek-r1:14b" } else { mdl };
-                provider.ollama(msg, m, sys).await
+            "ask_cerebras" => match resolve_model(mdl, c.cerebras_model.as_ref(), "cerebras") {
+                Ok(m) => provider.cerebras(msg, &m, sys).await,
+                Err(e) => Err(e),
+            },
+            "ask_sambanova" => match resolve_model(mdl, c.sambanova_model.as_ref(), "sambanova") {
+                Ok(m) => provider.sambanova(msg, &m, sys).await,
+                Err(e) => Err(e),
+            },
+            "ask_kimi" => match resolve_model(mdl, c.kimi_model.as_ref(), "kimi") {
+                Ok(m) => provider.kimi(msg, &m, sys).await,
+                Err(e) => Err(e),
+            },
+            "ask_nvidia" => match resolve_model(mdl, c.nvidia_model.as_ref(), "nvidia") {
+                Ok(m) => provider.nvidia(msg, &m, sys).await,
+                Err(e) => Err(e),
+            },
+            "ask_openrouter_1" => match resolve_model(mdl, c.openrouter_model_1.as_ref(), "openrouter_model_1") {
+                Ok(m) => provider.openrouter(msg, &m, sys).await,
+                Err(e) => Err(e),
+            },
+            "ask_openrouter_2" => match resolve_model(mdl, c.openrouter_model_2.as_ref(), "openrouter_model_2") {
+                Ok(m) => provider.openrouter(msg, &m, sys).await,
+                Err(e) => Err(e),
+            },
+            "ask_openrouter_3" => match resolve_model(mdl, c.openrouter_model_3.as_ref(), "openrouter_model_3") {
+                Ok(m) => provider.openrouter(msg, &m, sys).await,
+                Err(e) => Err(e),
+            },
+            "ask_openrouter" => match resolve_model(mdl, c.openrouter_model_1.as_ref(), "openrouter") {
+                Ok(m) => provider.openrouter(msg, &m, sys).await,
+                Err(e) => Err(e),
+            },
+            "ask_ollama" => match resolve_model(mdl, c.ollama_model.as_ref(), "ollama") {
+                Ok(m) => provider.ollama(msg, &m, sys).await,
+                Err(e) => Err(e),
             },
             "listar_operaciones" => Ok(
                 "leer_txt, leer_md, leer_json, leer_csv, guardar_archivo, guardar_json, \

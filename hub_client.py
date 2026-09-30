@@ -131,6 +131,16 @@ def _openai_call(base_url: str, api_key: str, model: str, messages: List[dict], 
         resp_data = json.load(resp)
         return resp_data["choices"][0]["message"]["content"]
 
+def load_catalog() -> dict:
+    """Carga el catálogo maestro de hubs si existe."""
+    if CATALOG_FILE.exists():
+        try:
+            with open(CATALOG_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
 def chat(
     hub: str,
     prompt: str,
@@ -146,7 +156,15 @@ def chat(
     hub_cfg = cfg.get("hubs", {}).get(hub)
     if not hub_cfg:
         return f"[ERROR] Hub '{hub}' no existe. Disponible: {list(cfg.get('hubs', {}).keys())}"
-    model = hub_cfg.get("model", "")
+    
+    # Resolucion dinamica de modelo (override > config alumno > catalogo maestro)
+    model = kwargs.pop("model", None) or hub_cfg.get("model")
+    if not model:
+        cat = load_catalog()
+        model = cat.get("hubs", {}).get(hub, {}).get("model", "")
+    if not model:
+        return f"[ERROR] Hub '{hub}' no tiene modelo especificado en student_config.json ni en hubs_master_catalog.json."
+
     base_url = hub_cfg.get("base_url", "")
     compatible = hub_cfg.get("compatible_with", "openai")
     retries = max_retries if max_retries is not None else max(len(hub_cfg.get("keys", [])), 1)

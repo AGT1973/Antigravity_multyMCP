@@ -1,5 +1,5 @@
 use reqwest::Client;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use serde_json::{json, Value};
 use std::fs;
 use std::path::PathBuf;
@@ -17,10 +17,18 @@ pub struct Config {
     pub kimi_api_key: Option<String>,
     pub nvidia_api_key: Option<String>,
 
-    // OpenRouter: 3 slots de modelos configurables
-    pub openrouter_model_1: Option<String>,  // default: claude-sonnet-4-5
-    pub openrouter_model_2: Option<String>,  // default: thinkingmachines/inkling
-    pub openrouter_model_3: Option<String>,  // default: openai/gpt-4o
+    // Models (Zero hardcoding - configured in config.json or passed dynamically)
+    pub groq_model: Option<String>,
+    pub gemini_model: Option<String>,
+    pub hf_model: Option<String>,
+    pub cerebras_model: Option<String>,
+    pub sambanova_model: Option<String>,
+    pub kimi_model: Option<String>,
+    pub nvidia_model: Option<String>,
+    pub openrouter_model_1: Option<String>,
+    pub openrouter_model_2: Option<String>,
+    pub openrouter_model_3: Option<String>,
+    pub ollama_model: Option<String>,
 
     // Toggles
     #[serde(default)] pub enable_openrouter: bool,
@@ -32,7 +40,6 @@ pub struct Config {
     #[serde(default)] pub enable_kimi: bool,
     #[serde(default)] pub enable_nvidia: bool,
     #[serde(default)] pub enable_local_ops: bool,
-    // Ollama va en su propio MCP separado - NO se activa desde este bridge
     #[serde(default)] pub enable_ollama: bool,
 }
 
@@ -157,6 +164,7 @@ impl MultiCloudProvider {
         let key = self.config.cerebras_api_key.as_deref().ok_or("Sin cerebras_api_key")?;
         let res = self.client.post("https://api.cerebras.ai/v1/chat/completions")
             .bearer_auth(key)
+            .header("User-Agent", "Antigravity-MultiMCP/2.0")
             .json(&json!({
                 "model": model,
                 "messages": Self::msgs(prompt, system)
@@ -237,23 +245,15 @@ impl MultiCloudProvider {
         Err(format!("NVIDIA HTTP {}: {}", status, body))
     }
 
-    // Llama al slot OpenRouter con el modelo indicado por número (1, 2 o 3)
-    pub async fn openrouter(&self, prompt: &str, system: &str, slot: u8) -> Result<String, String> {
+    // Llama a OpenRouter con modelo dinámico (pasado o de config)
+    pub async fn openrouter(&self, prompt: &str, model: &str, system: &str) -> Result<String, String> {
         if !self.config.enable_openrouter { return Err("OpenRouter is disabled".into()); }
         let key = self.config.openrouter_api_key.as_deref().ok_or("Sin openrouter_api_key")?;
-
-        let model = match slot {
-            2 => self.config.openrouter_model_2.as_deref()
-                    .unwrap_or("thinkingmachines/inkling"),
-            3 => self.config.openrouter_model_3.as_deref()
-                    .unwrap_or("openai/gpt-4o"),
-            _ => self.config.openrouter_model_1.as_deref()
-                    .unwrap_or("anthropic/claude-sonnet-4-5"),
-        };
 
         let res = self.client.post("https://openrouter.ai/api/v1/chat/completions")
             .bearer_auth(key)
             .header("HTTP-Referer", "https://github.com/AGT1973/Antigravity_multyMCP")
+            .header("X-Title", "Antigravity MultiMCP")
             .json(&json!({
                 "model": model,
                 "messages": Self::msgs(prompt, system)
