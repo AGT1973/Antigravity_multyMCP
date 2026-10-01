@@ -16,6 +16,7 @@ pub struct Config {
     pub sambanova_api_key: Option<String>,
     pub kimi_api_key: Option<String>,
     pub nvidia_api_key: Option<String>,
+    pub perplexity_api_key: Option<String>,
 
     // Models (Zero hardcoding - configured in config.json or passed dynamically)
     pub groq_model: Option<String>,
@@ -29,6 +30,8 @@ pub struct Config {
     pub openrouter_model_2: Option<String>,
     pub openrouter_model_3: Option<String>,
     pub ollama_model: Option<String>,
+    // Perplexity: preset ("fast"|"low"|"medium"|"high") o model ID directo
+    pub perplexity_preset: Option<String>,
 
     // Toggles
     #[serde(default)] pub enable_openrouter: bool,
@@ -41,6 +44,7 @@ pub struct Config {
     #[serde(default)] pub enable_nvidia: bool,
     #[serde(default)] pub enable_local_ops: bool,
     #[serde(default)] pub enable_ollama: bool,
+    #[serde(default)] pub enable_perplexity: bool,
 }
 
 pub fn load_config() -> Config {
@@ -288,5 +292,75 @@ impl MultiCloudProvider {
             }
         }
         Err(format!("Ollama HTTP {}: {}", status, body))
+    }
+
+    /// Perplexity Agent API (POST /v1/agent).
+    /// `preset_or_model`: un preset ("fast"|"low"|"medium"|"high") o un model ID directo ("openai/gpt-5.6-sol", etc.)
+    /// Si empieza con un nombre de proveedor conocido (openai/, anthropic/, google/, xai/) se trata como model.
+    /// En caso contrario se envía como preset.
+    pub async fn perplexity(&self, prompt: &str, preset_or_model: &str, system: &str) -> Result<String, String> {
+        if !self.config.enable_perplexity { return Err("Perplexity is disabled. Set enable_perplexity: true in config.json".into()); }
+        let key = self.config.perplexity_api_key.as_deref().ok_or("Sin perplexity_api_key en config.json")?;
+
+        // Decide si es preset o model directo
+        let known_providers = ["openai/", "anthropic/", "google/", "xai/", "meta/", "mistral/", "cohere/"];
+        let is_model = known_providers.iter().any(|p| preset_or_model.starts_with(p));
+
+        let payload = if is_model {
+            let mut m = json!({
+                "model": preset_or_model,
+                "input": prompt,
+                "tools": [{"type": "web_search"}]
+            });
+            if !system.is_empty() {
+                m["instructions"] = json!(system);
+            }
+            m
+        } else {
+            // preset
+            let preset = if preset_or_model.trim().is_empty() { "fast" } else { preset_or_model.trim() };
+            let mut m = json!({
+                "preset": preset,
+                "input": prompt
+            });
+            if !system.is_empty() {
+                m["instructions"] = json!(system);
+            }
+            m
+        };
+
+        let res = self.client.post("https://api.perplexity.ai/v1/agent")
+            .bearer_auth(key)
+            .header("User-Agent", "Antigravity-MultiMCP/2.1")
+            .json(&payload)
+            .send().await.map_err(|e| e.to_string())?;
+
+        let status = res.status();
+        let body: Value = res.json().await.map_err(|e| e.to_string())?;
+
+        if status.is_success() {
+            // Recorre el array output buscando type=="message" -> content[].type=="output_text"
+            let mut texts: Vec<String> = vec![];
+            if let Some(output) = body["output"].as_array() {
+                for item in output {
+                    if item["type"].as_str() == Some("message") {
+                        if let Some(contents) = item["content"].as_array() {
+                            for c in contents {
+                                if c["type"].as_str() == Some("output_text") {
+                                    if let Some(t) = c["text"].as_str() {
+                                        texts.push(t.to_string());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if !texts.is_empty() {
+                return Ok(texts.join("\n\n"));
+            }
+            return Err(format!("Perplexity: respuesta sin output_text. Body: {}", body));
+        }
+        Err(format!("Perplexity HTTP {}: {}", status, body))
     }
 }

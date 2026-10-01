@@ -7,6 +7,7 @@
   "sambanova_api_key": "YOUR_SAMBANOVA_API_KEY",
   "kimi_api_key": "YOUR_KIMI_API_KEY",
   "nvidia_api_key": "YOUR_NVIDIA_API_KEY",
+  "perplexity_api_key": "YOUR_PERPLEXITY_API_KEY",
 
   "groq_model": "llama-3.3-70b-versatile",
   "gemini_model": "gemini-2.5-flash",
@@ -19,6 +20,7 @@
   "openrouter_model_2": "anthropic/claude-3.5-sonnet",
   "openrouter_model_3": "openai/gpt-4o",
   "ollama_model": "llama3.2",
+  "perplexity_preset": "fast",
 
   "enable_local_ops": true,
   "enable_openrouter": false,
@@ -29,5 +31,6 @@
   "enable_sambanova": false,
   "enable_kimi": false,
   "enable_nvidia": false,
-  "enable_ollama": false
+  "enable_ollama": false,
+  "enable_perplexity": false
 }

@@ -130,6 +130,27 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
                 ia_props.clone(), &["mensaje"]
             ));
         }
+        if c.enable_perplexity {
+            let preset_desc = c.perplexity_preset.as_deref().unwrap_or("fast");
+            tools.push(tool(
+                "ask_perplexity",
+                &format!(
+                    "Perplexity Agent API · Búsqueda web + razonamiento en tiempo real. \
+                     Preset por defecto: '{}'. Opciones de 'modelo': fast | low | medium | high | <model-id>. \
+                     Expone web_search grounding con citas.",
+                    preset_desc
+                ),
+                json!({
+                    "mensaje": { "type": "string", "description": "Tu pregunta o prompt" },
+                    "modelo": {
+                        "type": "string",
+                        "description": "Preset (fast/low/medium/high) o model ID directo (ej: openai/gpt-5.6-sol). Opcional."
+                    },
+                    "sistema": { "type": "string", "description": "Instrucción de sistema (opcional)" }
+                }),
+                &["mensaje"]
+            ));
+        }
 
         // ── OpenRouter ───────────────────────────────────────────────────────
         if c.enable_openrouter {
@@ -247,6 +268,15 @@ pub async fn handle_request(req: Value, provider: Arc<MultiCloudProvider>) -> Op
             "ask_ollama" => match resolve_model(mdl, c.ollama_model.as_ref(), "ollama") {
                 Ok(m) => provider.ollama(msg, &m, sys).await,
                 Err(e) => Err(e),
+            },
+            "ask_perplexity" => {
+                // Jerarquía: arg 'modelo' → config.perplexity_preset → default "fast"
+                let preset_or_model = if !mdl.trim().is_empty() {
+                    mdl.to_string()
+                } else {
+                    c.perplexity_preset.clone().unwrap_or_else(|| "fast".to_string())
+                };
+                provider.perplexity(msg, &preset_or_model, sys).await
             },
             "listar_operaciones" => Ok(
                 "leer_txt, leer_md, leer_json, leer_csv, guardar_archivo, guardar_json, \
