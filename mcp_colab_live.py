@@ -15,14 +15,14 @@ server = FastMCP("Antigravity-Colab-Live")
 COLAB_TUNNEL_URL = "http://localhost:8000"
 TIMEOUT = 60.0
 
-@server.tool(name="colab_set_tunnel")
+@server.tool(name="set_tunnel")
 def colab_set_tunnel(url: str) -> str:
     """Configura la URL pública del túnel Cloudflare o ngrok de Google Colab."""
     global COLAB_TUNNEL_URL
     COLAB_TUNNEL_URL = url.rstrip("/")
     return f"✅ URL del túnel de Colab actualizada a: {COLAB_TUNNEL_URL}"
 
-@server.tool(name="colab_ping_hardware")
+@server.tool(name="ping_hw")
 async def colab_ping_hardware() -> str:
     """Consulta la GPU/TPU activa y la memoria disponible en el runtime de Colab."""
     async with httpx.AsyncClient(timeout=TIMEOUT) as client:
@@ -33,7 +33,7 @@ async def colab_ping_hardware() -> str:
         except Exception as e:
             return f"❌ No se pudo conectar con Colab en {COLAB_TUNNEL_URL}: {e}"
 
-@server.tool(name="colab_eval_code")
+@server.tool(name="eval_code")
 async def colab_eval_code(python_code: str) -> str:
     """Ejecuta código de tensores / álgebra geométrica en la GPU/TPU de Colab en tiempo real."""
     async with httpx.AsyncClient(timeout=TIMEOUT) as client:

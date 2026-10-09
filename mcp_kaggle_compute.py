@@ -15,7 +15,7 @@ server = FastMCP("Antigravity-Kaggle-Compute")
 KAGGLE_DIR = os.path.expanduser("~/.kaggle")
 os.makedirs(KAGGLE_DIR, exist_ok=True)
 
-@server.tool(name="kaggle_check_auth")
+@server.tool(name="check_auth")
 def kaggle_check_auth() -> str:
     """Verifica si las credenciales de Kaggle están configuradas."""
     token_path = os.path.join(KAGGLE_DIR, "access_token")
@@ -24,7 +24,7 @@ def kaggle_check_auth() -> str:
         return "[OK] Credenciales encontradas en .kaggle"
     return "[ERROR] No se encontro token de Kaggle."
 
-@server.tool(name="kaggle_set_credentials")
+@server.tool(name="set_token")
 def kaggle_set_credentials(token: str) -> str:
     """Configura el token de acceso oficial de Kaggle (KGAT_...)."""
     token_path = os.path.join(KAGGLE_DIR, "access_token")
@@ -32,7 +32,7 @@ def kaggle_set_credentials(token: str) -> str:
         f.write(token.strip())
     return "[OK] Archivo access_token creado exitosamente."
 
-@server.tool(name="kaggle_run_benchmark")
+@server.tool(name="run_bench")
 def kaggle_run_benchmark(username: str, accelerator: str = "gpu") -> str:
     """
     Empuja y ejecuta el benchmark de POLYDIM en Kaggle.
@@ -75,7 +75,7 @@ def kaggle_run_benchmark(username: str, accelerator: str = "gpu") -> str:
     except Exception as e:
         return f"[ERROR] Error al enviar a Kaggle: {e}"
 
-@server.tool(name="kaggle_get_results")
+@server.tool(name="get_results")
 def kaggle_get_results(kernel_name: str) -> str:
     """Descarga los logs y resultados generados por el benchmark en Kaggle."""
     out_dir = r"E:\POLYDIM_EINSOF\eval_logs\kaggle_results"

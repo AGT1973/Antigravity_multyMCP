@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "cerebras": {
+      "command": "C:/RUTA_A_TU_CARPETA/mcp_cerebras.exe",
+      "env": {
+        "CEREBRAS_API_KEY": "TU_API_KEY_AQUI"
+      }
+    },
+    "groq": {
+      "command": "C:/RUTA_A_TU_CARPETA/mcp_groq.exe",
+      "env": {
+        "GROQ_API_KEY": "TU_API_KEY_AQUI"
+      }
+    },
+    "nvidia": {
+      "command": "C:/RUTA_A_TU_CARPETA/mcp_nvidia.exe",
+      "env": {
+        "NVIDIA_API_KEY": "TU_API_KEY_AQUI"
+      }
+    },
+    "colab": {
+      "command": "python",
+      "args": [
+        "-u",
+        "C:/RUTA_A_TU_CARPETA/mcp_colab_live.py"
+      ]
+    },
+    "kaggle": {
+      "command": "python",
+      "args": [
+        "-u",
+        "C:/RUTA_A_TU_CARPETA/mcp_kaggle_compute.py"
+      ]
+    }
+  }
+}

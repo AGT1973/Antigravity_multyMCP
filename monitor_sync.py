@@ -70,7 +70,8 @@ def sync_git():
 
 def sync_gdrive():
     """Hace una copia espejo del workspace a Google Drive (ignorando .git y compilados)."""
-    if not GDRIVE_BACKUP_DIR.parent.exists():
+    drive_root = (GDRIVE_BACKUP_DIR.drive or "I:") + "\\"
+    if not os.path.exists(drive_root) or not GDRIVE_BACKUP_DIR.parent.exists():
         print_log("GDRIVE: Unidad no encontrada o no montada. Saltando backup.")
         return
         

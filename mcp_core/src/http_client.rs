@@ -24,6 +24,7 @@ pub async fn execute_openai_compatible(
     let res = client.post(url)
         .header("Authorization", format!("Bearer {}", api_key))
         .header("Content-Type", "application/json")
+        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Antigravity/2.0")
         .header("X-Moonshot-Project-ID", &project_id)
         .json(&request_body)
         .send()

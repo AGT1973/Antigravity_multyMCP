@@ -20,7 +20,7 @@ impl ProviderConfig for NvidiaProvider {
     }
 
     fn default_model(&self) -> &str {
-        "meta/llama-3.1-405b-instruct"
+        "deepseek-ai/deepseek-v4-flash-0731"
     }
 }
 
