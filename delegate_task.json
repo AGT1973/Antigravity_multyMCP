@@ -1,0 +1,1 @@
+{"name":"delegate_task","description":"Delega una tarea arquitectónica al Project Manager. Éste la ruteará a GPT-4o, Claude o Groq asincrónicamente manejando fallbacks y cuotas automáticamente.","parameters":{"properties":{"prompt":{"description":"La instrucción o prompt a delegar al cluster de Workers.","type":"string"}},"required":["prompt"],"type":"object"}}

@@ -1,0 +1,117 @@
+{
+  "_meta": {
+    "version": "2026-09-30",
+    "description": "Catálogo maestro de Hubs de IA y sus modelos activos. Mantenido por el profesor. Cuando un proveedor depreca un modelo, SOLO se actualiza este archivo o el config.json del alumno sin recompilar.",
+    "importante": "Si un alumno recibe error 404 al llamar a un hub, el campo model en su config.json o student_config.json está desactualizado. Reemplazarlo con el valor de este catálogo.",
+    "como_agregar_hub_nuevo": "Agregar una nueva entrada al objeto hubs con los campos: model, base_url, compatible_with, api_key_url, notes, last_verified."
+  },
+  "hubs": {
+    "groq": {
+      "model": "llama-3.3-70b-versatile",
+      "base_url": "https://api.groq.com/openai/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://console.groq.com/keys",
+      "notes": "Free tier ultra-rápido LPU. Compatible 100% con la spec de OpenAI.",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "llama-3.1-8b-instant",
+        "qwen-2.5-coder-32b",
+        "deepseek-r1-distill-llama-70b"
+      ]
+    },
+    "aistudio": {
+      "model": "gemini-2.5-flash",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "compatible_with": "openai",
+      "api_key_url": "https://aistudio.google.com/apikey",
+      "notes": "Google AI Studio. Usar el endpoint compatible con OpenAI.",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "gemini-2.0-flash",
+        "gemini-1.5-flash"
+      ]
+    },
+    "cerebras": {
+      "model": "llama-3.3-70b",
+      "base_url": "https://api.cerebras.ai/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://cloud.cerebras.ai/",
+      "notes": "Inferencia en obleas WSE. Extremadamente rápido. Requiere User-Agent header.",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "gpt-oss-120b",
+        "qwen-3.8-27b"
+      ]
+    },
+    "nvidia": {
+      "model": "meta/llama-3.3-70b-instruct",
+      "base_url": "https://integrate.api.nvidia.com/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://build.nvidia.com/",
+      "notes": "NVIDIA NIM. Créditos gratuitos al registrarse.",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "nvidia/llama-3.1-nemotron-70b-instruct",
+        "deepseek-ai/deepseek-r1"
+      ]
+    },
+    "kimi": {
+      "model": "moonshot-v1-8k",
+      "base_url": "https://api.moonshot.ai/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://platform.kimi.ai/",
+      "notes": "Moonshot Kimi AI. Gran capacidad de contexto.",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "moonshot-v1-32k",
+        "kimi-k3"
+      ]
+    },
+    "sambanova": {
+      "model": "Meta-Llama-3.3-70B-Instruct",
+      "base_url": "https://api.sambanova.ai/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://cloud.sambanova.ai/",
+      "notes": "Hardware RDU de alta eficiencia.",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "Meta-Llama-3.1-8B-Instruct"
+      ]
+    },
+    "huggingface": {
+      "model": "meta-llama/Llama-3.3-70B-Instruct",
+      "base_url": "https://router.huggingface.co/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://huggingface.co/settings/tokens",
+      "notes": "HF Inference API Serverless Router.",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "mistralai/Mistral-7B-Instruct-v0.3"
+      ]
+    },
+    "openrouter": {
+      "model": "google/gemini-2.5-flash",
+      "base_url": "https://openrouter.ai/api/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://openrouter.ai/keys",
+      "notes": "Gateway multi-modelo (OpenRouter).",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "anthropic/claude-3.5-sonnet",
+        "openai/gpt-4o",
+        "deepseek/deepseek-r1"
+      ]
+    },
+    "deepseek": {
+      "model": "deepseek-chat",
+      "base_url": "https://api.deepseek.com/v1",
+      "compatible_with": "openai",
+      "api_key_url": "https://platform.deepseek.com/api_keys",
+      "notes": "deepseek-chat (V3 general) / deepseek-reasoner (R1 razonamiento).",
+      "last_verified": "2026-09-30",
+      "modelos_alternativos": [
+        "deepseek-reasoner"
+      ]
+    }
+  }
+}
