@@ -13,5 +13,6 @@ members = [
     "mcp_deepseek",
     "mcp_glm",
     "mcp_qwen",
+    "mcp_colab",
 ]
 

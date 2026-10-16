@@ -12,6 +12,7 @@ config.json
 /target/release/config.json
 api_keys*
 mcp_carousel_state.json
+student_config.json
 
 # Scratch / generator scripts
 scaffold.py
