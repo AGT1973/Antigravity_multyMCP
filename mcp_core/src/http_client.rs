@@ -10,14 +10,17 @@ pub async fn execute_openai_compatible(
 ) -> Result<String, Box<dyn Error>> {
     let client = Client::new();
     
-    let temp = if url.contains("moonshot") { 1.0 } else { 0.0 };
-    let request_body = json!({
+    let mut request_body = json!({
         "model": model,
         "messages": [
             {"role": "user", "content": prompt}
-        ],
-        "temperature": temp
+        ]
     });
+
+    if !url.contains("anthropic") {
+        let temp = if url.contains("moonshot") { 1.0 } else { 0.0 };
+        request_body["temperature"] = json!(temp);
+    }
 
     let project_id = std::env::var("KIMI_PROJECT_ID").unwrap_or_else(|_| "default".to_string());
 
@@ -43,8 +46,10 @@ pub async fn execute_openai_compatible(
     }
 
     let json_res: Value = res.json().await?;
-    let content = json_res["choices"][0]["message"]["content"]
+    let msg = &json_res["choices"][0]["message"];
+    let content = msg["content"]
         .as_str()
+        .or_else(|| msg["reasoning"].as_str())
         .unwrap_or("Empty response")
         .to_string();
 

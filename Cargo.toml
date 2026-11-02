@@ -14,5 +14,6 @@ members = [
     "mcp_glm",
     "mcp_qwen",
     "mcp_colab",
+    "mcp_claude",
 ]
 

@@ -20,7 +20,7 @@ impl ProviderConfig for KimiProvider {
     }
 
     fn default_model(&self) -> &str {
-        "kimi-k3"
+        "moonshot-v1-auto"
     }
 }
 

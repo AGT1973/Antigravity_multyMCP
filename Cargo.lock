@@ -477,6 +477,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "mcp_claude"
+version = "0.1.0"
+dependencies = [
+ "mcp_core",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
 name = "mcp_colab"
 version = "0.1.0"
 dependencies = [

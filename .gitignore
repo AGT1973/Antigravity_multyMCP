@@ -25,3 +25,6 @@ __pycache__/
 .idea/
 
 mcp_config.json
+
+# Historico de entregas antiguas (no trackear)
+ENTREGABLE_ALUMNOS/_HISTORICO/

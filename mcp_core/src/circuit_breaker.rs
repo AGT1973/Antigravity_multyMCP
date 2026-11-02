@@ -34,6 +34,7 @@ impl KeyMatrix {
         // Groq/Cerebras: ventana de horas (ej: 5 horas = 18,000s)
         // Gemini / Nvidia / OpenRouter free tiers: cuota diaria/semanal (ej: 24h = 86,400s o 72h = 259,200s)
         let default_cooldown = match provider_name.as_str() {
+            "claude" | "anthropic" => 3600,          // 1 hora (Tier Pago USD 15.01)
             "groq" | "cerebras" => 5 * 3600,         // 5 horas
             "gemini" | "aistudio" => 24 * 3600,      // 24 horas (cuota diaria)
             "deepseek" => 12 * 3600,                 // 12 horas
