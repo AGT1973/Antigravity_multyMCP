@@ -1,117 +1,306 @@
 {
   "_meta": {
-    "version": "2026-09-30",
-    "description": "Catálogo maestro de Hubs de IA y sus modelos activos. Mantenido por el profesor. Cuando un proveedor depreca un modelo, SOLO se actualiza este archivo o el config.json del alumno sin recompilar.",
-    "importante": "Si un alumno recibe error 404 al llamar a un hub, el campo model en su config.json o student_config.json está desactualizado. Reemplazarlo con el valor de este catálogo.",
-    "como_agregar_hub_nuevo": "Agregar una nueva entrada al objeto hubs con los campos: model, base_url, compatible_with, api_key_url, notes, last_verified."
+    "version": "2026-11-04",
+    "description": "Catálogo maestro de Hubs de IA: modelos SOTA verificados en silicio. Cuando un proveedor depreca un modelo, SOLO se actualiza este archivo. Las API Keys viven EXCLUSIVAMENTE en .env (protegido por .gitignore).",
+    "como_agregar_hub_nuevo": "Agregar entrada con: model, base_url, compatible_with, api_key_env_prefix, tier, cooldown_hours, notes, last_verified."
   },
-  "hubs": {
-    "groq": {
-      "model": "llama-3.3-70b-versatile",
-      "base_url": "https://api.groq.com/openai/v1",
+  "free_tier": {
+    "huggingface": {
+      "model": "meta-llama/Llama-3.3-70B-Instruct",
+      "base_url": "https://router.huggingface.co/v1",
       "compatible_with": "openai",
-      "api_key_url": "https://console.groq.com/keys",
-      "notes": "Free tier ultra-rápido LPU. Compatible 100% con la spec de OpenAI.",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "llama-3.1-8b-instant",
-        "qwen-2.5-coder-32b",
-        "deepseek-r1-distill-llama-70b"
-      ]
+      "api_key_env_prefix": "HF_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 24,
+      "api_key_url": "https://huggingface.co/settings/tokens",
+      "notes": "HF Inference Router. Carrusel de ~14 cuentas Gmail disponibles.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["mistralai/Mistral-7B-Instruct-v0.3", "Qwen/Qwen2.5-72B-Instruct"]
     },
     "aistudio": {
       "model": "gemini-2.5-flash",
       "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
       "compatible_with": "openai",
+      "api_key_env_prefix": "GEMINI_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 24,
       "api_key_url": "https://aistudio.google.com/apikey",
-      "notes": "Google AI Studio. Usar el endpoint compatible con OpenAI.",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "gemini-2.0-flash",
-        "gemini-1.5-flash"
-      ]
+      "notes": "Google AI Studio. Carrusel de ~14 cuentas Gmail disponibles.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["gemini-2.0-flash", "gemini-1.5-flash"]
     },
     "cerebras": {
-      "model": "llama-3.3-70b",
-      "base_url": "https://api.cerebras.ai/v1",
+      "model": "gpt-oss-120b",
+      "base_url": "https://api.cerebras.ai/v1/chat/completions",
       "compatible_with": "openai",
+      "api_key_env_prefix": "CEREBRAS_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 5,
       "api_key_url": "https://cloud.cerebras.ai/",
-      "notes": "Inferencia en obleas WSE. Extremadamente rápido. Requiere User-Agent header.",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "gpt-oss-120b",
-        "qwen-3.8-27b"
-      ]
-    },
-    "nvidia": {
-      "model": "meta/llama-3.3-70b-instruct",
-      "base_url": "https://integrate.api.nvidia.com/v1",
-      "compatible_with": "openai",
-      "api_key_url": "https://build.nvidia.com/",
-      "notes": "NVIDIA NIM. Créditos gratuitos al registrarse.",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "nvidia/llama-3.1-nemotron-70b-instruct",
-        "deepseek-ai/deepseek-r1"
-      ]
-    },
-    "kimi": {
-      "model": "moonshot-v1-8k",
-      "base_url": "https://api.moonshot.ai/v1",
-      "compatible_with": "openai",
-      "api_key_url": "https://platform.kimi.ai/",
-      "notes": "Moonshot Kimi AI. Gran capacidad de contexto.",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "moonshot-v1-32k",
-        "kimi-k3"
-      ]
+      "notes": "WSE ultra-rápido. Modelos activos verificados: gpt-oss-120b, qwen-3.8-27b. Carrusel de ~8 cuentas.",
+      "last_verified": "2026-11-04",
+      "extra_headers": {"User-Agent": "Antigravity/1.0"},
+      "modelos_alternativos": ["qwen-3.8-27b"]
     },
     "sambanova": {
       "model": "Meta-Llama-3.3-70B-Instruct",
       "base_url": "https://api.sambanova.ai/v1",
       "compatible_with": "openai",
+      "api_key_env_prefix": "SAMBANOVA_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 6,
       "api_key_url": "https://cloud.sambanova.ai/",
-      "notes": "Hardware RDU de alta eficiencia.",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "Meta-Llama-3.1-8B-Instruct"
-      ]
+      "notes": "Hardware RDU. Carrusel de ~14 cuentas Gmail disponibles.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["Meta-Llama-3.1-8B-Instruct"]
     },
-    "huggingface": {
-      "model": "meta-llama/Llama-3.3-70B-Instruct",
-      "base_url": "https://router.huggingface.co/v1",
-      "compatible_with": "openai",
-      "api_key_url": "https://huggingface.co/settings/tokens",
-      "notes": "HF Inference API Serverless Router.",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "mistralai/Mistral-7B-Instruct-v0.3"
-      ]
+    "claude_free": {
+      "model": "claude-3-5-haiku-20241022",
+      "base_url": "https://api.anthropic.com/v1/messages",
+      "compatible_with": "anthropic",
+      "api_key_env_prefix": "CLAUDE_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 24,
+      "api_key_url": "https://platform.claude.com/settings/workspaces/default/keys",
+      "notes": "Tier free: sk-ant-api03-* . Carrusel de ~10 cuentas. Incluye claves usr sk-ant-usr-*.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["claude-3-haiku-20240307"]
     },
-    "openrouter": {
-      "model": "google/gemini-2.5-flash",
-      "base_url": "https://openrouter.ai/api/v1",
+    "mulerouter": {
+      "model": "auto",
+      "base_url": "https://www.mulerouter.ai/api/v1",
       "compatible_with": "openai",
-      "api_key_url": "https://openrouter.ai/keys",
-      "notes": "Gateway multi-modelo (OpenRouter).",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "anthropic/claude-3.5-sonnet",
-        "openai/gpt-4o",
-        "deepseek/deepseek-r1"
-      ]
+      "api_key_env_prefix": "MULEROUTER_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 24,
+      "api_key_url": "https://www.mulerouter.ai/app/api-keys",
+      "notes": "Router multi-modelo. sk-mr-* Carrusel de ~12 cuentas.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": []
     },
     "deepseek": {
       "model": "deepseek-chat",
       "base_url": "https://api.deepseek.com/v1",
       "compatible_with": "openai",
+      "api_key_env_prefix": "DEEPSEEK_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 12,
       "api_key_url": "https://platform.deepseek.com/api_keys",
-      "notes": "deepseek-chat (V3 general) / deepseek-reasoner (R1 razonamiento).",
-      "last_verified": "2026-09-30",
-      "modelos_alternativos": [
-        "deepseek-reasoner"
-      ]
+      "notes": "deepseek-chat=V3 general / deepseek-reasoner=R1. Carrusel ~10 cuentas. Fila 1 marcada PAGO.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["deepseek-reasoner"]
+    },
+    "groq": {
+      "model": "llama-3.3-70b-versatile",
+      "base_url": "https://api.groq.com/openai/v1/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "GROQ_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 5,
+      "api_key_url": "https://console.groq.com/keys",
+      "notes": "LPU ultra-rápido. Carrusel de ~12 cuentas Gmail.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["llama-3.1-8b-instant", "qwen-2.5-coder-32b", "deepseek-r1-distill-llama-70b"]
+    },
+    "kimi": {
+      "model": "kimi-k3",
+      "base_url": "https://api.moonshot.ai/v1",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "KIMI_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 24,
+      "api_key_url": "https://platform.kimi.ai/console/api-keys",
+      "notes": "Modelos SOTA verificados: kimi-k3, kimi-k3.1-pro, kimi-k3.1-pro-highspeed, kimi-k2.7-code, kimi-k2.6. Fila 1 marcada PAGO. Carrusel ~10 cuentas.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["kimi-k3.1-pro", "kimi-k3.1-pro-highspeed", "kimi-k2.7-code", "kimi-k2.6"]
+    },
+    "nvidia": {
+      "model": "meta/llama-3.3-70b-instruct",
+      "base_url": "https://integrate.api.nvidia.com/v1",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "NVIDIA_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 48,
+      "api_key_url": "https://build.nvidia.com/settings/api-keys",
+      "notes": "nvapi-* Créditos gratuitos al registrarse. Carrusel de ~8 cuentas.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["nvidia/llama-3.1-nemotron-70b-instruct", "deepseek-ai/deepseek-r1"]
+    },
+    "kaggle": {
+      "model": "gpu_kernel",
+      "base_url": "https://www.kaggle.com/api/v1",
+      "compatible_with": "kaggle_api",
+      "api_key_env_prefix": "KAGGLE_API_TOKEN",
+      "tier": "free",
+      "cooldown_hours": 72,
+      "api_key_url": "https://www.kaggle.com/settings/account",
+      "notes": "KGAT_* 30h GPU/sem por cuenta (T4/P100). Carrusel de ~12 cuentas Gmail.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": []
+    },
+    "ollama": {
+      "model": "qwen2.5:7b",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "base_url_aladin": "http://192.168.100.21:11434/v1",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "OLLAMA_API_KEY",
+      "tier": "free_local",
+      "cooldown_hours": 0,
+      "api_key_url": "https://ollama.com/settings/keys",
+      "notes": "Local Windows 127.0.0.1 o Nodo ALADIN 192.168.100.21. Carrusel de ~8 cuentas Ollama cloud. OLLAMA_HOST override desde env.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["llama3.3:70b", "deepseek-r1:14b", "mistral:7b"]
+    },
+    "openrouter": {
+      "model": "meta-llama/llama-3.3-70b-instruct",
+      "base_url": "https://openrouter.ai/api/v1/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "OPENROUTER_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 24,
+      "api_key_url": "https://openrouter.ai/keys",
+      "notes": "sk-or-v1-* append :free suffix for free models. 1 marcada CAIDO. Carrusel ~12 cuentas.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["google/gemini-2.5-flash:free", "deepseek/deepseek-r1:free"]
+    },
+    "tinker": {
+      "model": "auto",
+      "base_url": "https://tinker.thinkingmachines.ai/api/v1",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "TINKER_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 24,
+      "api_key_url": "https://tinker.thinkingmachines.ai/keys",
+      "notes": "tml-* Thinking Machines AI. 2 marcadas CAIDO. Carrusel ~10 cuentas.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": []
+    },
+    "openai_free": {
+      "model": "gpt-4o-mini",
+      "base_url": "https://api.openai.com/v1/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "OPENAI_API_KEY",
+      "tier": "free",
+      "cooldown_hours": 168,
+      "api_key_url": "https://platform.openai.com/api-keys",
+      "notes": "sk-proj-* Free tier. Se resetea semanal (~168h). Carrusel ~8 cuentas.",
+      "last_verified": "2026-11-04",
+      "modelos_alternativos": ["gpt-4o-mini"]
+    }
+  },
+  "paid_tier": {
+    "openrouter_paid": {
+      "model": "meta-llama/llama-3.3-70b-instruct",
+      "base_url": "https://openrouter.ai/api/v1/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "OPENROUTER_API_KEY_PAID",
+      "tier": "paid",
+      "notes": "Cuenta principal ariel.garcia.traba. Verificado Exit Code 0 en 1580ms (2026-11-04). Fan-out 3 modelos en paralelo pendiente.",
+      "parallel_models": ["meta-llama/llama-3.3-70b-instruct", "google/gemini-2.5-flash", "anthropic/claude-3.5-sonnet"],
+      "last_verified": "2026-11-04"
+    },
+    "cerebras_paid": {
+      "model": "gpt-oss-120b",
+      "base_url": "https://api.cerebras.ai/v1/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "CEREBRAS_API_KEY_PAID",
+      "tier": "paid",
+      "notes": "Verificado Exit Code 0 en 3352ms. Modelos: gpt-oss-120b, qwen-3.8-27b.",
+      "last_verified": "2026-11-04",
+      "modelos_disponibles": ["gpt-oss-120b", "qwen-3.8-27b"]
+    },
+    "kimi_paid": {
+      "model": "kimi-k3",
+      "base_url": "https://api.moonshot.ai/v1",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "KIMI_API_KEY_DIRECT_1",
+      "tier": "paid",
+      "notes": "polydim_direct. Modelos verificados: kimi-k3, kimi-k3.1-pro, kimi-k3.1-pro-highspeed, kimi-k2.7-code, kimi-k2.6.",
+      "last_verified": "2026-11-04",
+      "modelos_disponibles": ["kimi-k2.7-code", "kimi-k3.1-pro-highspeed", "kimi-k2.7-code-highspeed", "kimi-k2.6", "kimi-k3", "kimi-k3.1-pro"]
+    },
+    "openai_paid": {
+      "model": "gpt-4o-mini",
+      "base_url": "https://api.openai.com/v1/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "OPENAI_API_KEY",
+      "tier": "paid",
+      "notes": "ChatGPT Plus agt1973. Verificado Exit Code 0 en 20443ms (latencia alta normal desde AR).",
+      "last_verified": "2026-11-04",
+      "modelos_disponibles": ["gpt-4o", "gpt-4o-mini", "o1", "o3-mini"]
+    },
+    "claude_paid": {
+      "model": "claude-3-5-haiku-20241022",
+      "base_url": "https://api.anthropic.com/v1/messages",
+      "compatible_with": "anthropic",
+      "api_key_env_prefix": "CLAUDE_API_KEY_PAID",
+      "tier": "paid",
+      "notes": "sk-ant-usr-* Nueva clave recibida 2026-11-04. Pendiente verificación silicio.",
+      "last_verified": "pendiente",
+      "modelos_disponibles": ["claude-opus-4-6", "claude-sonnet-4-6", "claude-3-5-haiku-20241022"]
+    },
+    "perplexity_paid": {
+      "model": "sonar",
+      "base_url": "https://api.perplexity.ai/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "PERPLEXITY_API_KEY",
+      "tier": "paid",
+      "notes": "Sonar con búsqueda web. Verificado Exit Code 0 en 1663ms. max_tokens >= 10 obligatorio.",
+      "last_verified": "2026-11-04",
+      "modelos_disponibles": ["sonar", "sonar-pro", "sonar-reasoning"]
+    },
+    "qwen_paid": {
+      "model": "qwen-plus",
+      "base_url": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "QWEN_DASHSCOPE_PRO",
+      "tier": "paid",
+      "notes": "Alibaba Bailian/DashScope. Pro verificado Exit Code 0 en 1728ms. Flash key: pendiente validar.",
+      "last_verified": "2026-11-04",
+      "modelos_disponibles": ["qwen-plus", "qwen-max", "qwen-turbo", "qwen3-235b-a22b"]
+    },
+    "kaggle_paid": {
+      "model": "gpu_kernel",
+      "base_url": "https://www.kaggle.com/api/v1",
+      "compatible_with": "kaggle_api",
+      "api_key_env_prefix": "KAGGLE_API_TOKEN_1",
+      "tier": "paid",
+      "notes": "4 cuentas con tokens activos verificados. GPU T4/P100 30h/sem.",
+      "last_verified": "2026-11-04"
+    },
+    "perplexity_web": {
+      "model": "sonar-pro",
+      "base_url": "https://api.perplexity.ai/chat/completions",
+      "compatible_with": "openai",
+      "api_key_env_prefix": "PERPLEXITY_API_KEY",
+      "tier": "paid",
+      "notes": "Sonar Pro con búsqueda web profunda y citas.",
+      "last_verified": "2026-11-04"
+    }
+  },
+  "special": {
+    "ibm_quantum": {
+      "base_url": "https://quantum.cloud.ibm.com/",
+      "compatible_with": "qiskit_runtime",
+      "account": "ariel.garcia.traba@gmail.com",
+      "auth_method": "oauth_google",
+      "notes": "Autenticación vía Google OAuth. MCP conector: pendiente (mcp_ibm_quantum). Requiere Qiskit Runtime API.",
+      "last_verified": "pendiente"
+    },
+    "gitlab": {
+      "base_url": "https://gitlab.com",
+      "api_token_env": "GITLAB_TOKEN",
+      "account": "ariel.garcia.traba@gmail.com",
+      "notes": "glpat-* Token persistido en .env",
+      "last_verified": "2026-11-04"
+    },
+    "github": {
+      "base_url": "https://github.com",
+      "api_token_env": "GITHUB_TOKEN_AGY_09",
+      "account": "AGY_09 -> ariel.garcia.traba@gmail.com",
+      "remote": "https://github.com/AGT1973/Antigravity_multyMCP.git",
+      "notes": "ghp_* Token persistido en .env",
+      "last_verified": "2026-11-04"
     }
   }
 }
